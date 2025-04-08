@@ -295,7 +295,6 @@ const defaultConfig = {
   caVersion: "1.5.15",
   samples: false,
   docker: false,
-  retro: false,
 };
 
 const config = Object.assign(
@@ -315,17 +314,36 @@ function updateFabricInstallScript(cb) {
 
 function cleanFabricSetupFolderStructure(cb) {
   execSync("rimraf ./fabric");
+  execSync("rimraf ./temp-bin");
+  cb();
+}
+
+function createBaseStructure(cb) {
+  execSync("mkdir ./temp-bin");
+  execSync("cp ./bin/install-fabric.sh ./temp-bin/install-fabric.sh");
   cb();
 }
 
 function installFabric(cb) {
-  const commandBinary = `./fabric/install-fabric.sh --fabric-version '${config.fabricVersion}' --ca-version '${config.caVersion}' binary`;
-  const commandSamples = `./fabric/install-fabric.sh --fabric-version '${config.fabricVersion}' --ca-version '${config.caVersion}' samples`;
-  const commandDocker = `./fabric/install-fabric.sh --fabric-version '${config.fabricVersion}' --ca-version '${config.caVersion}' docker`;
+  const commandBinary = `./temp-bin/install-fabric.sh --fabric-version '${config.fabricVersion}' --ca-version '${config.caVersion}' binary`;
+  const commandSamples = `./temp-bin/install-fabric.sh --fabric-version '${config.fabricVersion}' --ca-version '${config.caVersion}' samples`;
+  const commandDocker = `./temp-bin/install-fabric.sh --fabric-version '${config.fabricVersion}' --ca-version '${config.caVersion}' docker`;
 
   execSync(commandBinary);
   if (config.samples) execSync(commandSamples);
   if (config.docker) execSync(commandDocker);
+
+  cb();
+}
+
+function organizeFileStructure(cb) {
+  execSync("cp -r ./bin ./fabric/");
+  execSync("cp -r ./builders ./fabric/");
+  execSync("cp -r ./config ./fabric/");
+
+  execSync("rimraf ./bin");
+  execSync("rimraf ./builders");
+  execSync("rimraf ./config");
 
   cb();
 }
@@ -352,4 +370,9 @@ export const docs = makeDocs();
 
 export const updateFabric = series(updateFabricInstallScript);
 
-export const setup = series(cleanFabricSetupFolderStructure, installFabric);
+export const setup = series(
+  cleanFabricSetupFolderStructure,
+  createBaseStructure,
+  installFabric,
+  organizeFileStructure
+);
