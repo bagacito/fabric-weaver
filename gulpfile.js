@@ -304,30 +304,30 @@ const config = Object.assign(
 );
 
 function updateFabricInstallScript(cb) {
-  execSync("rimraf ./fabric/install-fabric.sh");
+  execSync("rimraf ./repo-bin/install-fabric.sh");
   execSync(
-    "curl -o ./fabric/install-fabric.sh https://raw.githubusercontent.com/hyperledger/fabric/main/scripts/install-fabric.sh"
+    "curl -o ./repo-bin/install-fabric.sh https://raw.githubusercontent.com/hyperledger/fabric/main/scripts/install-fabric.sh"
   );
-  execSync("chmod +x ./fabric/install-fabric.sh");
+  execSync("chmod +x ./repo-bin/install-fabric.sh");
   cb();
 }
 
 function cleanFabricSetupFolderStructure(cb) {
   execSync("rimraf ./fabric");
-  execSync("rimraf ./temp-bin");
+  execSync("rimraf ./bin");
   cb();
 }
 
 function createBaseStructure(cb) {
-  execSync("mkdir ./temp-bin");
-  execSync("cp ./bin/install-fabric.sh ./temp-bin/install-fabric.sh");
+  execSync("mkdir ./bin");
+  execSync("cp ./repo-bin/install-fabric.sh ./bin/install-fabric.sh");
   cb();
 }
 
 function installFabric(cb) {
-  const commandBinary = `./temp-bin/install-fabric.sh --fabric-version '${config.fabricVersion}' --ca-version '${config.caVersion}' binary`;
-  const commandSamples = `./temp-bin/install-fabric.sh --fabric-version '${config.fabricVersion}' --ca-version '${config.caVersion}' samples`;
-  const commandDocker = `./temp-bin/install-fabric.sh --fabric-version '${config.fabricVersion}' --ca-version '${config.caVersion}' docker`;
+  const commandBinary = `./bin/install-fabric.sh --fabric-version '${config.fabricVersion}' --ca-version '${config.caVersion}' binary`;
+  const commandSamples = `./bin/install-fabric.sh --fabric-version '${config.fabricVersion}' --ca-version '${config.caVersion}' samples`;
+  const commandDocker = `./bin/install-fabric.sh --fabric-version '${config.fabricVersion}' --ca-version '${config.caVersion}' docker`;
 
   execSync(commandBinary);
   if (config.samples) execSync(commandSamples);
