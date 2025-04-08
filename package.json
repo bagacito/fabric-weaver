@@ -6,6 +6,8 @@
   "scripts": {
     "build": "rimraf ./lib && rimraf ./dist && gulp dev",
     "build:prod": "rimraf ./lib && rimraf ./dist && gulp prod",
+    "test:circular": "dpdm -T --no-warning --no-tree ./src/index.ts",
+    "flash-forward": "npx npm-check-updates -u && npm install",
     "lint": "eslint .",
     "lint-fix": "eslint --fix ."
   },
@@ -51,6 +53,7 @@
   "devDependencies": {
     "@eslint/js": "^9.24.0",
     "@stylistic/eslint-plugin": "^4.2.0",
+    "dpdm": "^3.14.0",
     "eslint": "^9.24.0",
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-prettier": "^5.2.6",
@@ -63,6 +66,7 @@
     "gulp-sourcemaps": "^3.0.0",
     "gulp-typescript": "^6.0.0-alpha.1",
     "gulp-uglify": "^3.0.2",
+    "npm-check-updates": "^17.1.16",
     "prettier": "^3.5.3",
     "rimraf": "^6.0.1",
     "ts-loader": "^9.5.2",
