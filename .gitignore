@@ -2,3 +2,6 @@
 /lib
 /dist
 /fabric
+/bin
+/builders
+/config
