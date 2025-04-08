@@ -320,6 +320,8 @@ function cleanFabricSetupFolderStructure(cb) {
 
 function createBaseStructure(cb) {
   execSync("mkdir ./bin");
+  execSync("mkdir ./fabric");
+  execSync("mkdir ./fabric/bin");
   execSync("cp ./repo-bin/install-fabric.sh ./bin/install-fabric.sh");
   cb();
 }
