@@ -1,0 +1,77 @@
+{
+  "name": "fabric-weaver",
+  "version": "0.0.1",
+  "description": "Typescript utility for hyperledger fabric",
+  "type": "module",
+  "scripts": {
+    "build": "rimraf ./lib && rimraf ./dist && gulp dev",
+    "build:prod": "rimraf ./lib && rimraf ./dist && gulp prod",
+    "lint": "eslint .",
+    "lint-fix": "eslint --fix ."
+  },
+  "engines": {
+    "node": ">=22.0.0",
+    "npm": ">=10.0.0"
+  },
+  "files": [
+    "lib",
+    "dist"
+  ],
+  "keywords": [
+    "plantuml",
+    "mermaid",
+    "uml",
+    "drawio",
+    "mddocs",
+    "md",
+    "jsdoc",
+    "doc",
+    "docs",
+    "documentation",
+    "test",
+    "reports",
+    "ci/cd",
+    "ci",
+    "cd",
+    "fabric",
+    "hyperledger",
+    "typescript",
+    "ts"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bagacito/fabric-weaver.git"
+  },
+  "author": "Vitor Nogueira",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bagacito/fabric-weaver/issues"
+  },
+  "homepage": "https://github.com/bagacito/fabric-weaver#readme",
+  "devDependencies": {
+    "@eslint/js": "^9.24.0",
+    "@stylistic/eslint-plugin": "^4.2.0",
+    "eslint": "^9.24.0",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-prettier": "^5.2.6",
+    "globals": "^16.0.0",
+    "gulp": "^5.0.0",
+    "gulp-if": "^3.0.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-replace": "^1.1.4",
+    "gulp-run-command": "^0.0.10",
+    "gulp-sourcemaps": "^3.0.0",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "gulp-uglify": "^3.0.2",
+    "prettier": "^3.5.3",
+    "rimraf": "^6.0.1",
+    "ts-loader": "^9.5.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.29.1",
+    "undici-types": "^7.7.0",
+    "vinyl-named": "^1.1.0",
+    "webpack-node-externals": "^3.0.0",
+    "webpack-stream": "^7.0.0"
+  }
+}
