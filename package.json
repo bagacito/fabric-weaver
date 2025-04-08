@@ -8,6 +8,7 @@
     "build": "rimraf ./lib && rimraf ./dist && gulp dev",
     "build:prod": "rimraf ./lib && rimraf ./dist && gulp prod",
     "setup": "npx gulp setup --docker=false --samples=false",
+    "reset": "rm -rf * && git checkout . && git pull && npm run install",
     "flash-forward-fabric": "npx gulp updateFabric",
     "test:circular": "dpdm -T --no-warning --no-tree ./src/index.ts",
     "flash-forward": "npx npm-check-updates -u && npm install",
