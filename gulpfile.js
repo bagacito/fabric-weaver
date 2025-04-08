@@ -14,6 +14,7 @@ import webpack from "webpack-stream";
 import run from "gulp-run-command";
 import process from "node:process";
 import nodeExternals from "webpack-node-externals";
+import { execSync } from "child_process";
 
 import pkg from "./package.json" with { type: "json" };
 import fs from "fs";
@@ -258,6 +259,77 @@ function bundleFromFile(entryFile, isEsm, isDev, isLib) {
 //   };
 // }
 
+function argsSanitizer(arg) {
+  if (arg == "true") return true;
+
+  if (arg == "false") return false;
+
+  return arg;
+}
+
+function argParser(args) {
+  return args.reduce((accum, entry) => {
+    const [key, val] = entry.split("=");
+
+    if (!accum) accum = {};
+
+    const camelCasedKey = key
+      .replaceAll("--", "")
+      .toLowerCase()
+      .split("-")
+      .map((s, i) => {
+        if (i === 0) return s;
+        return s.charAt(0).toUpperCase() + s.slice(1);
+      })
+      .join("");
+
+    accum[camelCasedKey] = argsSanitizer(val);
+
+    return accum;
+  }, {});
+}
+
+//Latest version so far might change in the future added as fallback
+const defaultConfig = {
+  fabricVersion: "2.5.12",
+  caVersion: "1.5.15",
+  samples: false,
+  docker: false,
+  retro: false,
+};
+
+const config = Object.assign(
+  {},
+  defaultConfig,
+  argParser(process.argv.slice(3))
+);
+
+function updateFabricInstallScript(cb) {
+  execSync("rimraf ./fabric/install-fabric.sh");
+  execSync(
+    "curl -o ./fabric/install-fabric.sh https://raw.githubusercontent.com/hyperledger/fabric/main/scripts/install-fabric.sh"
+  );
+  execSync("chmod +x ./fabric/install-fabric.sh");
+  cb();
+}
+
+function cleanFabricSetupFolderStructure(cb) {
+  execSync("rimraf ./fabric");
+  cb();
+}
+
+function installFabric(cb) {
+  const commandBinary = `./fabric/install-fabric.sh --fabric-version '${config.fabricVersion}' --ca-version '${config.caVersion}' binary`;
+  const commandSamples = `./fabric/install-fabric.sh --fabric-version '${config.fabricVersion}' --ca-version '${config.caVersion}' samples`;
+  const commandDocker = `./fabric/install-fabric.sh --fabric-version '${config.fabricVersion}' --ca-version '${config.caVersion}' docker`;
+
+  execSync(commandBinary);
+  if (config.samples) execSync(commandSamples);
+  if (config.docker) execSync(commandDocker);
+
+  cb();
+}
+
 export const dev = series(
   parallel(
     series(exportDefault(true, "commonjs"), exportDefault(true, "es2022")),
@@ -277,3 +349,7 @@ export const prod = series(
 );
 
 export const docs = makeDocs();
+
+export const updateFabric = series(updateFabricInstallScript);
+
+export const setup = series(cleanFabricSetupFolderStructure, installFabric);
