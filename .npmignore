@@ -1,0 +1,13 @@
+tsconfig.json
+gulpfile.js
+eslint.config.js
+.prettierrc
+.nvmrc
+.npmrc
+.npmignore
+.gitignore
+jest.config.ts
+/.vscode
+/repo-bin
+/tests
+/src
