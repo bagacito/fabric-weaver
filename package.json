@@ -3,6 +3,11 @@
   "version": "0.0.1",
   "description": "Typescript utility for hyperledger fabric",
   "type": "module",
+  "types": "lib/index.d.ts",
+  "exports": {
+    "require": "./lib/index.cjs",
+    "import": "./lib/esm/index.js"
+  },
   "scripts": {
     "postinstall": "npm run setup",
     "build": "rimraf ./lib && rimraf ./dist && gulp dev",
@@ -18,7 +23,11 @@
     "test:circular": "dpdm -T --no-warning --no-tree ./src/index.ts",
     "flash-forward": "npx npm-check-updates -u && npm install",
     "lint": "eslint .",
-    "lint-fix": "eslint --fix ."
+    "lint-fix": "eslint --fix .",
+    "drawings": "for FILE in workdocs/drawings/*.drawio; do echo \"converting $FILE to image...\" && docker run --rm -v $(pwd):/data rlespinasse/drawio-export --format png $FILE; done && cp -rf workdocs/drawings/export/* workdocs/resources/",
+    "uml": "cd workdocs/uml && for FILE in ./*.puml; do docker run --rm -v $(pwd):/work -w /work miy4/plantuml -DPLANTUML_LIMIT_SIZE=8192 -tpng $FILE; done && cd ../.. && cp -fr workdocs/uml/*.png workdocs/resources/",
+    "docs": "npx rimraf ./docs && mkdir docs && npm run do-install -- better-docs taffydb && gulp docs; npm remove better-docs taffydb",
+    "publish-docs": "docker run -it --rm --user $(id -u):$(id -g) -v \"$(pwd)/workdocs/confluence:/content\" -e ATLASSIAN_API_TOKEN=$(cat .confluence-token) ghcr.io/markdown-confluence/publish:latest"
   },
   "engines": {
     "node": ">=22.0.0",
@@ -64,6 +73,7 @@
     "@stylistic/eslint-plugin": "^4.2.0",
     "@types/jest": "^29.5.14",
     "@types/prompts": "^2.4.9",
+    "clean-publish": "^5.1.0",
     "dpdm": "^3.14.0",
     "eslint": "^9.24.0",
     "eslint-config-prettier": "^10.1.1",
@@ -81,9 +91,15 @@
     "jest-coverage-badges": "^1.1.2",
     "jest-html-reporters": "^3.1.7",
     "jest-junit": "^16.0.0",
+    "jsdoc": "^4.0.4",
+    "jsdoc-mermaid": "^1.0.0",
+    "markdown-include": "^0.4.3",
     "merge-stream": "^2.0.0",
+    "minimist": "^1.2.8",
+    "nodemon": "^3.1.9",
     "npm-check-updates": "^17.1.16",
     "prettier": "^3.5.3",
+    "prompts": "^2.4.2",
     "rimraf": "^6.0.1",
     "ts-jest": "^29.3.1",
     "ts-loader": "^9.5.2",
