@@ -13,11 +13,17 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "cSpell.words": [
+    "accum",
+    "dpdm",
+    "gulpfile",
     "hyperledger",
     "jsdocs",
     "jsxdev",
     "mddocs",
     "Nogueira",
+    "npmignore",
+    "npmjs",
+    "nvmrc",
     "Vitor"
   ]
 }

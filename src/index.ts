@@ -8,7 +8,7 @@
  * @returns {string} The resulting concatenated string
  *
  * @example
- * // returns "Hello Worlddefault"
+ * // returns "Hello World default"
  * complexFunction();
  *
  * @example
@@ -18,5 +18,5 @@
  * @memberOf module:ts-workspace.Utils
  */
 export function complexFunction(arg1: string = "default") {
-  return "Hello World" + arg1;
+  return "Hello World" + " " + arg1;
 }
