@@ -20,3 +20,11 @@
 export function complexFunction(arg1: string = "default") {
   return "Hello World" + " " + arg1;
 }
+
+/**
+ * Represents the current version of the ts-workspace module.
+ * The actual version number is replaced during the build process.
+ * @constant
+ * @type {string}
+ */
+export const VERSION = "##VERSION##";
