@@ -2,6 +2,13 @@ ARG NODE_VERSION=22
 
 FROM node:${NODE_VERSION:-22}-alpine AS builder
 
+
+
+
+
+
+
+
 RUN apk update && apk upgrade
 
 ENV WORKDIR="fabric-weaver"

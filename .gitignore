@@ -24,3 +24,5 @@
 !/workdocs/reports/jest.report.config.ts
 /workdocs/uml/*
 !/workdocs/uml/*.puml
+
+/temp

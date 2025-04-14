@@ -1,7 +1,9 @@
 ## Tabnine prompts to generate decent documentation
 
 ### Root index file (/ts-doc-root)
- - scopes: file, workspace
+
+- scopes: file, workspace
+
 ```
 Act as a seasoned typescript developer.
 The current document is the root index of a module.
@@ -13,6 +15,7 @@ never omit or change any code
 ```
 
 chat gpt generated:
+
 ```
 You're a senior TypeScript developer writing JSDoc documentation for a class to be used with better-docs. Given the module code:
 Generate a JSDoc comment block for a TypeScript module file using better-docs formatting:
@@ -26,9 +29,10 @@ Respond with only the JSDoc block for the module file.
 never omit or change any code
 ```
 
-
 ### Index file (/ts-doc-index)
- - scopes: file, workspace
+
+- scopes: file, workspace
+
 ```
 Act as a seasoned typescript developer.
 The current document is the root of a namespace of a module.
@@ -39,7 +43,6 @@ Define documentation block with:
 also document all exported objects;
 never omit or change any code
 ```
-
 
 ### Classes (/ts-doc-class)
 
@@ -68,6 +71,7 @@ never omit or change any code
 ```
 
 chat gpt generated:
+
 ```
 You're a senior TypeScript developer writing JSDoc documentation for a class to be used with better-docs
 Generate a JSDoc comment block for a TypeScript class file using better-docs formatting:
@@ -86,7 +90,6 @@ Respond only with the full JSDoc comment block for the class and its methods.
 refer to the module it belongs with @memberOf
 never omit or change any code, including the constructor
 ```
-
 
 ### Interfaces and Types (/ts-doc-types)
 
@@ -110,6 +113,7 @@ never omit or change any code
 ```
 
 chat gpt generated:
+
 ```
 You're a senior TypeScript developer documenting a TypeScript interface or type for better-docs using JSDoc. Given the code:
 - If it's a type, use @typedef
@@ -149,6 +153,7 @@ never omit or change any code
 ```
 
 chat gpt generated:
+
 ```
 You're a senior TypeScript developer writing JSDoc documentation for a function to be used with better-docs:
 - Add @function with the function name
@@ -162,7 +167,6 @@ Output only the full JSDoc comment block for the function.
 refer to the module it belongs with @memberOf
 never omit or change any code
 ```
-
 
 ### Constants and Enums (/ts-doc-const)
 
@@ -184,6 +188,7 @@ never omit or change any code
 ```
 
 chat gpt generated:
+
 ```
 You're a senior TypeScript developer writing JSDoc documentation for a constant or enum for better-docs. Based on the code:
 - Use @const with the variable name
@@ -217,8 +222,8 @@ The order of tags  (when applicable) should be as follows:
 never omit or change any code
 ```
 
-
 chat gpt generated:
+
 ```
 You're a senior TypeScript developer writing JSDoc documentation for a command line script to be used with better-docs:
 document the target script, always including the @description tag with a short description of its purpose, and a@summary tag with a more detailed one.
