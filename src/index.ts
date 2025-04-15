@@ -7,3 +7,4 @@ export const VERSION = "##VERSION##";
 
 export * from "./core";
 export * from "./fabric";
+export * from "./utils";
