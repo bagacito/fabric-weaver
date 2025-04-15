@@ -1,10 +1,14 @@
 // import { ChildClass, Class, complexFunction, something } from "../../src";
-import { complexFunction } from "../../src";
+import { FabricCAServerBuilder, FabricCAServerCommand } from "../../src";
 // import { addReportMessage } from "../test-utils";
 
 describe("Type Script Workspace test", function () {
   it("runs functions", function () {
-    expect(complexFunction()).toBe("Hello World default");
+    const builder = new FabricCAServerBuilder()
+      .setCommand(FabricCAServerCommand.START)
+      .build();
+
+    expect(builder).toBeDefined();
   });
 
   // it("Instantiates Classes", async function () {

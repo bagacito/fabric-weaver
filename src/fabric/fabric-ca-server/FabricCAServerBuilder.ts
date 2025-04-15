@@ -52,7 +52,7 @@ export class FabricCAServerBuilder implements IBuilder<FabricCAServer> {
    * @category Fabric
    */
   private config: FabricCaServerConfig = readFileYaml<FabricCaServerConfig>(
-    path.join(__dirname, "../../configs/base-fabric-ca-server-config.yaml")
+    path.join(__dirname, "../../configs/fabric-ca-server-config.yaml")
   );
 
   /**
