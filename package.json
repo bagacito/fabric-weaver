@@ -8,6 +8,9 @@
     "require": "./lib/index.cjs",
     "import": "./lib/esm/index.js"
   },
+  "bin": {
+    "fabric-ca-server": "./lib/fabric/fabric-ca-server/cli.cjs"
+  },
   "scripts": {
     "postinstall": "npm run setup",
     "build": "rimraf ./lib && rimraf ./dist && gulp dev",
