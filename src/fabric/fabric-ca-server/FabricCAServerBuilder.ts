@@ -1,7 +1,12 @@
+import { FabricCaServerConfig } from "../../core/interfaces/configs/FabricCAServerConfig";
 import { FabricCAServerCommand } from "../../core/constants/FabricCAServerCommand";
 import { FabricCAServerFlags } from "../../core/constants/FabricCAServerFlags";
+import { InvalidCommandError } from "../../core/errors/InvalidCommandError";
 import { IBuilder } from "../../core/interfaces/IBuilder";
 import { FabricCAServer } from "./FabricCAServer";
+import * as path from "path";
+import { readFileYaml } from "../../utils/yaml";
+import { FabricBinaries } from "../../core/constants/FabricBinaries";
 
 /**
  * @description
@@ -38,6 +43,19 @@ export class FabricCAServerBuilder implements IBuilder<FabricCAServer> {
   private options: Map<string, any> = new Map<string, any>();
 
   /**
+   * @summary Builder class for the FabricCAServer
+   *
+   * @private
+   * @class FabricCAServerBuilder
+   * @implements IBuilder
+   *
+   * @category Fabric
+   */
+  private config: FabricCaServerConfig = readFileYaml<FabricCaServerConfig>(
+    path.join(__dirname, "../../configs/base-fabric-ca-server-config.yaml")
+  );
+
+  /**
    * @description
    * Sets the base command for the builder. This is the main action (e.g., "enroll", "register", etc.)
    * that the CLI will perform.
@@ -66,6 +84,8 @@ export class FabricCAServerBuilder implements IBuilder<FabricCAServer> {
     if (!address) return this;
 
     this.options.set(FabricCAServerFlags.ADDRESS, address);
+    //TODO: ADD TO CONFIG
+    // this.config.
     return this;
   }
 
@@ -83,6 +103,27 @@ export class FabricCAServerBuilder implements IBuilder<FabricCAServer> {
     if (!bootstrapAdmin) return this;
 
     this.options.set(FabricCAServerFlags.BOOT, bootstrapAdmin);
+
+    const [user, password] = bootstrapAdmin.split(":");
+
+    this.config.registry!.identities = [
+      {
+        name: user,
+        pass: password,
+        type: "client",
+        affiliation: "",
+        attrs: {
+          "hf.Registrar.Roles": "*",
+          "hf.Registrar.DelegateRoles": "*",
+          "hf.Revoker": true,
+          "hf.IntermediateCA": true,
+          "hf.GenCRL": true,
+          "hf.Registrar.Attributes": "*",
+          "hf.AffiliationMgr": true,
+        },
+      },
+    ];
+
     return this;
   }
 
@@ -100,6 +141,9 @@ export class FabricCAServerBuilder implements IBuilder<FabricCAServer> {
     if (!caName) return this;
 
     this.options.set(FabricCAServerFlags.CA_NAME, caName);
+
+    this.config.ca!.name = caName;
+
     return this;
   }
 
@@ -117,6 +161,9 @@ export class FabricCAServerBuilder implements IBuilder<FabricCAServer> {
     if (!debug) return this;
 
     this.options.set(FabricCAServerFlags.DEBUG, debug);
+
+    this.config.debug = debug;
+
     return this;
   }
 
@@ -131,7 +178,12 @@ export class FabricCAServerBuilder implements IBuilder<FabricCAServer> {
    * @return {this} Returns the current builder instance.
    */
   setHome(home?: string): this {
+    if (!home) return this;
+
     this.options.set(FabricCAServerFlags.HOME, home);
+
+    //TODO: DEFINE ENV VARIABLE
+
     return this;
   }
 
@@ -149,6 +201,9 @@ export class FabricCAServerBuilder implements IBuilder<FabricCAServer> {
     if (!port) return this;
 
     this.options.set(FabricCAServerFlags.PORT, port);
+
+    this.config.port = port;
+
     return this;
   }
 
@@ -180,6 +235,11 @@ export class FabricCAServerBuilder implements IBuilder<FabricCAServer> {
     this.options.set(FabricCAServerFlags.TLS_ENABLED, true);
     this.options.set(FabricCAServerFlags.TLS_CERTFILE, certFile);
     this.options.set(FabricCAServerFlags.TLS_KEYFILE, keyFile);
+
+    this.config.tls!.enabled = true;
+    this.config.tls!.certfile = certFile;
+    this.config.tls!.keyfile = keyFile;
+
     return this;
   }
 
@@ -204,7 +264,10 @@ export class FabricCAServerBuilder implements IBuilder<FabricCAServer> {
    *   Builder-->>Builder: Return command string
    */
   build(): FabricCAServer {
-    let commandStr = `fabric-ca-server ${this.command}`;
+    if (!this.command)
+      throw new InvalidCommandError("No command was provided!");
+
+    let commandStr = `${FabricBinaries.SERVER} ${this.command}`;
     this.options.forEach((value, key) => {
       commandStr += ` ${key} ${value}`;
     });

@@ -5,7 +5,6 @@
  *
  * @interface IBuilder
  *
- * @memberOf module:fabric-integration.Core
  * @template T - The type of the object that the builder constructs.
  */
 export interface IBuilder<T> {
