@@ -5,7 +5,7 @@ import { FabricCAServerBuilder, FabricCAServerCommand } from "../../src";
 describe("Type Script Workspace test", function () {
   it("runs functions", function () {
     const builder = new FabricCAServerBuilder()
-      .setCommand(FabricCAServerCommand.START)
+      .setCommand(FabricCAServerCommand.START).enableTLS("./cert.pem", "./keyfile.")
       .build();
 
     expect(builder).toBeDefined();
